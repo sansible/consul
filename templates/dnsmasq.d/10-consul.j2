@@ -1,0 +1,1 @@
+server=/consul/127.0.0.1#{{ consul.settings.ports.dns if (consul.settings.ports is defined and consul.settings.ports.dns is defined) else '8600' }}

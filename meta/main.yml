@@ -1,0 +1,15 @@
+---
+
+galaxy_info:
+  author: David Reed
+  description: Installs and configures Consul
+  company: Lobsterdore
+  license: MIT
+  min_ansible_version: 1.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - all
+  categories:
+    - system
+dependencies: []

@@ -1,0 +1,11 @@
+---
+
+- name: Install Consul
+  include: install.yml
+  tags:
+    - build
+
+- name: Configure Consul
+  include: configure.yml
+  tags:
+    - configure

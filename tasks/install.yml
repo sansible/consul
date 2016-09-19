@@ -1,0 +1,60 @@
+---
+
+- name: Install required packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - unzip
+
+- name: Install Dnsmasq if using as nameserver
+  become: yes
+  apt:
+    name: dnsmasq
+    state: present
+  when: consul.use_as_nameserver | bool
+
+- name: Create Consul required directories
+  become: yes
+  file:
+    mode: 0755
+    path: "{{ item.value }}"
+    state: directory
+  with_dict: consul.directories
+
+- name: Download Consul
+  become: yes
+  get_url:
+    url: "https://releases.hashicorp.com/consul/{{ consul.version }}/consul_{{ consul.version }}_linux_amd64.zip"
+    dest: "/var/tmp/consul_{{ consul.version }}_linux_amd64.zip"
+    sha256sum: "{{ consul.checksum }}"
+
+- name: Extract Consul
+  become: yes
+  unarchive:
+    copy: no
+    creates: "{{ consul.directories.install_dir }}/consul"
+    dest: "{{ consul.directories.install_dir }}"
+    src: "/var/tmp/consul_{{ consul.version }}_linux_amd64.zip"
+
+- name: Link to Consul binary
+  become: yes
+  file:
+    dest: /usr/bin/consul
+    mode: 731
+    src: "{{ consul.directories.install_dir }}/consul"
+    state: link
+
+- name: Install Consul service
+  become: yes
+  template:
+    dest: /etc/init/consul.conf
+    mode: 0755
+    src: consul.conf.j2
+
+- name: Enable Consul service
+  become: yes
+  service:
+    enabled: yes
+    name: consul

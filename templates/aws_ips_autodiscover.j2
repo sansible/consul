@@ -1,0 +1,27 @@
+#!/bin/bash
+
+function main {
+  local INSTANCE_REGION
+  local IPS
+
+  INSTANCE_REGION=$(curl -s -f \
+    http://169.254.169.254/latest/meta-data/placement/availability-zone \
+    | sed '$s/.$//')
+  if [[ -z ${INSTANCE_REGION} ]]; then
+    exit 1
+  fi
+
+  IPS=$( aws ec2 describe-instances \
+    --region "${INSTANCE_REGION}" \
+    --filters {{ consul.aws_ips_autodiscover.lookup_filter }} \
+    --output text \
+    --query "Reservations[*].Instances[*].PrivateIpAddress | [] | join(' -join ', @)")
+
+  if [ -z "${IPS}" ]; then
+    exit 1
+  fi
+
+  echo "-join ${IPS}"
+}
+
+main "$@"
