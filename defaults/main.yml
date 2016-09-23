@@ -1,0 +1,30 @@
+---
+
+consul:
+  aws_ips_autodiscover:
+    enabled: no
+    lookup_filter: "Name=tag:Environment,Values=dev
+      Name=tag:Role,Values=consul_server
+      Name=instance-state-name,Values=running"
+  bind_interface: eth0
+  checksum: "abdf0e1856292468e2c9971420d73b805e93888e006c76324ae39416edcf0627"
+  directories:
+    config_dir: "/etc/consul.d"
+    data_dir: "/var/lib/consul"
+    install_dir: "/usr/share/consul"
+    log_dir: "/var/log/consul"
+  settings:
+    bootstrap: no
+    bootstrap_expect: 1
+    datacenter: "dc-1"
+    enable_debug: no
+    leave_on_terminate: yes
+    log_level: "warn"
+    node_name: "{{ ansible_fqdn }}"
+    rejoin_after_leave: yes
+    ports: {}
+    server: no
+    start_join: []
+  startopts: ""
+  use_as_nameserver: no
+  version: "0.6.4"

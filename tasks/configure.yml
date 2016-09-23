@@ -1,0 +1,40 @@
+---
+
+- name: Copy AWS autodiscover script
+  become: yes
+  template:
+    src: aws_ips_autodiscover.j2
+    dest: "/usr/local/bin/aws_ips_autodiscover"
+    mode: 0750
+  when: consul.aws_ips_autodiscover.enabled
+
+- name: Configure Consul service defaults
+  become: yes
+  template:
+    dest: /etc/default/consul
+    src: defaults.j2
+  notify:
+    - restart consul
+
+- name: Create Consul config
+  become: yes
+  template:
+    dest: "{{ consul.directories.config_dir }}/config.json"
+    src: config.json.j2
+  notify:
+    - restart consul
+
+- name: Configure Dnsmasq to use Consul as nameserver
+  become: yes
+  template:
+    dest: /etc/dnsmasq.d/10-consul
+    src: dnsmasq.d/10-consul.j2
+  when: consul.use_as_nameserver | bool
+  notify:
+    - restart dnsmasq
+
+- name: Start Consul service
+  become: yes
+  service:
+    state: started
+    name: consul

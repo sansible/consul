@@ -1,0 +1,14 @@
+{
+  "bootstrap": {{ "true" if consul.settings.server and consul.settings.bootstrap else "null" }},
+  "bootstrap_expect": {{ consul.settings.bootstrap_expect if consul.settings.server and not consul.settings.bootstrap else "null" }},
+  "start_join": {{ consul.settings.start_join | to_json }},
+  "datacenter": "{{ consul.settings.datacenter }}",
+  "data_dir": "{{ consul.directories.data_dir }}",
+  "enable_debug": {{ consul.settings.enable_debug | to_json }},
+  "leave_on_terminate": {{ consul.settings.leave_on_terminate | to_json }},
+  "log_level": "{{ consul.settings.log_level }}",
+  "node_name": "{{ consul.settings.node_name }}",
+  "ports": {{ consul.settings.ports | to_json }},
+  "rejoin_after_leave": {{ consul.settings.rejoin_after_leave | to_json }},
+  "server": {{ consul.settings.server | to_json }}
+}

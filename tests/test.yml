@@ -1,0 +1,25 @@
+---
+
+- name: Test Consul role
+  hosts: all
+
+  pre_tasks:
+    - name: Update apt
+      become: yes
+      apt:
+        cache_valid_time: 1800
+        update_cache: yes
+      tags:
+        - build
+
+  roles:
+    - role: sansible.consul
+
+  post_tasks:
+    - name: Consul should be running
+      become: yes
+      shell: service consul status | grep "start/running"
+      args:
+        warn: no
+      tags:
+        - assert

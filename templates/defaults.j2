@@ -1,0 +1,7 @@
+CONSUL_STARTOPS="{{ consul.startopts }}"
+BIND_INTERFACE="{{ consul.bind_interface | default('eth0') }}"
+{% if consul.aws_ips_autodiscover.enabled %}
+JOIN_STR="$( /usr/local/bin/aws_ips_autodiscover )"
+{% else %}
+JOIN_STR=""
+{% endif %}
