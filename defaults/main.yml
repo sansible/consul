@@ -7,7 +7,8 @@ consul:
       Name=tag:Role,Values=consul_server
       Name=instance-state-name,Values=running"
   bind_interface: eth0
-  checksum: "abdf0e1856292468e2c9971420d73b805e93888e006c76324ae39416edcf0627"
+  client_interface: eth0
+  checksum: "f894383eee730fcb2c5936748cc019d83b220321efd0e790dae9a3266f5d443a"
   directories:
     config_dir: "/etc/consul.d"
     data_dir: "/var/lib/consul"
@@ -25,6 +26,7 @@ consul:
     ports: {}
     server: no
     start_join: []
+    ui: no
   startopts: ""
   use_as_nameserver: no
-  version: "0.6.4"
+  version: "0.8.3"
