@@ -21,7 +21,7 @@
     mode: 0755
     path: "{{ item.value }}"
     state: directory
-  with_dict: consul.directories
+  with_dict: "{{ consul.directories }}"
 
 - name: Download Consul
   become: yes
