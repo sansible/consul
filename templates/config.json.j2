@@ -10,5 +10,6 @@
   "node_name": "{{ consul.settings.node_name }}",
   "ports": {{ consul.settings.ports | to_json }},
   "rejoin_after_leave": {{ consul.settings.rejoin_after_leave | to_json }},
-  "server": {{ consul.settings.server | to_json }}
+  "server": {{ consul.settings.server | to_json }},
+  "ui": {{ consul.settings.ui | to_json }}
 }
