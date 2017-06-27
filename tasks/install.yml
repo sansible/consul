@@ -46,12 +46,21 @@
     src: "{{ consul.directories.install_dir }}/consul"
     state: link
 
-- name: Install Consul service
+- name: Install Systemd Consul service
+  become: yes
+  template:
+    dest: /etc/systemd/system/consul.service
+    mode: 0755
+    src: systemd/systemd.j2
+  when: ansible_service_mgr == 'systemd'
+
+- name: Install Init Consul service
   become: yes
   template:
     dest: /etc/init/consul.conf
     mode: 0755
-    src: consul.conf.j2
+    src: upstart/init.j2
+  when: ansible_service_mgr == 'upstart'
 
 - name: Enable Consul service
   become: yes
