@@ -1,0 +1,13 @@
+[Unit]
+Description=Consul Agent
+
+[Service]
+EnvironmentFile=-/etc/default/consul
+Environment=GOMAXPROCS=`nproc`
+ExecStart=/usr/bin/consul agent \
+  -config-dir={{ consul.directories.config_dir }} \
+  -bind={{ ansible_default_ipv4['address'] }} \
+  ${CONSUL_STARTOPS}
+
+[Install]
+WantedBy=default.target
